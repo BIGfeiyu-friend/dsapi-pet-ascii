@@ -1,0 +1,494 @@
+{
+ "source": "未命名作品.psd",
+ "cal_size": [
+  2000,
+  1410
+ ],
+ "region": [
+  800,
+  300,
+  1130,
+  620
+ ],
+ "states": {
+  "open": {
+   "eye_l": {
+    "file": "open_eye_l.png",
+    "origin": [
+     847,
+     399
+    ],
+    "size": [
+     83,
+     92
+    ]
+   },
+   "eye_r": {
+    "file": "open_eye_r.png",
+    "origin": [
+     992,
+     392
+    ],
+    "size": [
+     85,
+     91
+    ]
+   },
+   "brow_l": {
+    "file": "open_brow_l.png",
+    "origin": [
+     844,
+     365
+    ],
+    "size": [
+     54,
+     50
+    ]
+   },
+   "brow_r": {
+    "file": "open_brow_r.png",
+    "origin": [
+     1004,
+     357
+    ],
+    "size": [
+     63,
+     30
+    ]
+   },
+   "sclera_l": {
+    "file": "open_sclera_l.png",
+    "origin": [
+     864,
+     418
+    ],
+    "size": [
+     64,
+     73
+    ]
+   },
+   "sclera_r": {
+    "file": "open_sclera_r.png",
+    "origin": [
+     1001,
+     404
+    ],
+    "size": [
+     64,
+     75
+    ]
+   },
+   "iris": "normal"
+  },
+  "half": {
+   "eye_l": {
+    "file": "half_eye_l.png",
+    "origin": [
+     844,
+     411
+    ],
+    "size": [
+     87,
+     64
+    ]
+   },
+   "eye_r": {
+    "file": "half_eye_r.png",
+    "origin": [
+     992,
+     399
+    ],
+    "size": [
+     92,
+     55
+    ]
+   },
+   "brow_l": {
+    "file": "half_brow_l.png",
+    "origin": [
+     845,
+     398
+    ],
+    "size": [
+     72,
+     29
+    ]
+   },
+   "brow_r": {
+    "file": "half_brow_r.png",
+    "origin": [
+     1001,
+     382
+    ],
+    "size": [
+     77,
+     14
+    ]
+   },
+   "sclera_l": {
+    "file": "half_sclera_l.png",
+    "origin": [
+     858,
+     426
+    ],
+    "size": [
+     65,
+     46
+    ]
+   },
+   "sclera_r": {
+    "file": "half_sclera_r.png",
+    "origin": [
+     1004,
+     416
+    ],
+    "size": [
+     68,
+     35
+    ]
+   },
+   "iris": "normal"
+  },
+  "wide": {
+   "eye_l": {
+    "file": "wide_eye_l.png",
+    "origin": [
+     846,
+     394
+    ],
+    "size": [
+     79,
+     94
+    ]
+   },
+   "eye_r": {
+    "file": "wide_eye_r.png",
+    "origin": [
+     997,
+     382
+    ],
+    "size": [
+     79,
+     99
+    ]
+   },
+   "brow_l": {
+    "file": "wide_brow_l.png",
+    "origin": [
+     843,
+     350
+    ],
+    "size": [
+     61,
+     53
+    ]
+   },
+   "brow_r": {
+    "file": "wide_brow_r.png",
+    "origin": [
+     1006,
+     341
+    ],
+    "size": [
+     64,
+     50
+    ]
+   },
+   "sclera_l": {
+    "file": "wide_sclera_l.png",
+    "origin": [
+     860,
+     411
+    ],
+    "size": [
+     67,
+     75
+    ]
+   },
+   "sclera_r": {
+    "file": "wide_sclera_r.png",
+    "origin": [
+     996,
+     394
+    ],
+    "size": [
+     66,
+     86
+    ]
+   },
+   "iris": "small"
+  },
+  "closed": {
+   "eye_l": {
+    "file": "closed_eye_l.png",
+    "origin": [
+     851,
+     429
+    ],
+    "size": [
+     81,
+     36
+    ]
+   },
+   "eye_r": {
+    "file": "closed_eye_r.png",
+    "origin": [
+     981,
+     418
+    ],
+    "size": [
+     86,
+     32
+    ]
+   },
+   "brow_l": {
+    "file": "closed_brow_l.png",
+    "origin": [
+     848,
+     396
+    ],
+    "size": [
+     72,
+     17
+    ]
+   },
+   "brow_r": {
+    "file": "closed_brow_r.png",
+    "origin": [
+     995,
+     387
+    ],
+    "size": [
+     76,
+     20
+    ]
+   }
+  },
+  "smile": {
+   "eye_l": {
+    "file": "smile_eye_l.png",
+    "origin": [
+     857,
+     424
+    ],
+    "size": [
+     79,
+     43
+    ]
+   },
+   "eye_r": {
+    "file": "smile_eye_r.png",
+    "origin": [
+     985,
+     416
+    ],
+    "size": [
+     81,
+     39
+    ]
+   },
+   "brow_l": {
+    "file": "smile_brow_l.png",
+    "origin": [
+     863,
+     383
+    ],
+    "size": [
+     57,
+     33
+    ]
+   },
+   "brow_r": {
+    "file": "smile_brow_r.png",
+    "origin": [
+     1009,
+     373
+    ],
+    "size": [
+     55,
+     28
+    ]
+   }
+  }
+ },
+ "iris": {
+  "normal": {
+   "l": {
+    "body": {
+     "file": "iris_normal_l.png",
+     "origin": [
+      879,
+      413
+     ],
+     "size": [
+      47,
+      63
+     ]
+    },
+    "highlight": {
+     "file": "iris_normal_l_hl.png",
+     "origin": [
+      897,
+      436
+     ],
+     "size": [
+      11,
+      15
+     ]
+    },
+    "center": [
+     903.0,
+     444.5
+    ],
+    "radius": [
+     23.0,
+     31.5
+    ]
+   },
+   "r": {
+    "body": {
+     "file": "iris_normal_r.png",
+     "origin": [
+      1000,
+      402
+     ],
+     "size": [
+      46,
+      66
+     ]
+    },
+    "highlight": {
+     "file": "iris_normal_r_hl.png",
+     "origin": [
+      1016,
+      427
+     ],
+     "size": [
+      13,
+      17
+     ]
+    },
+    "center": [
+     1023.0,
+     434.5
+    ],
+    "radius": [
+     23.0,
+     32.5
+    ]
+   }
+  },
+  "small": {
+   "l": {
+    "body": {
+     "file": "iris_small_l.png",
+     "origin": [
+      887,
+      420
+     ],
+     "size": [
+      41,
+      51
+     ]
+    },
+    "highlight": {
+     "file": "iris_small_l_hl.png",
+     "origin": [
+      902,
+      439
+     ],
+     "size": [
+      11,
+      14
+     ]
+    },
+    "center": [
+     907.5,
+     445.5
+    ],
+    "radius": [
+     19.5,
+     25.5
+    ]
+   },
+   "r": {
+    "body": {
+     "file": "iris_small_r.png",
+     "origin": [
+      1000,
+      409
+     ],
+     "size": [
+      45,
+      55
+     ]
+    },
+    "highlight": {
+     "file": "iris_small_r_hl.png",
+     "origin": [
+      1015,
+      428
+     ],
+     "size": [
+      11,
+      15
+     ]
+    },
+    "center": [
+     1022.0,
+     436.0
+    ],
+    "radius": [
+     22.0,
+     27.0
+    ]
+   }
+  }
+ },
+ "mouths": {
+  "dot": {
+   "file": "mouth_dot.png",
+   "origin": [
+    962,
+    534
+   ],
+   "size": [
+    10,
+    9
+   ]
+  },
+  "small": {
+   "file": "mouth_small.png",
+   "origin": [
+    964,
+    523
+   ],
+   "size": [
+    15,
+    9
+   ]
+  },
+  "o": {
+   "file": "mouth_o.png",
+   "origin": [
+    960,
+    522
+   ],
+   "size": [
+    15,
+    18
+   ]
+  },
+  "open": {
+   "file": "mouth_open.png",
+   "origin": [
+    950,
+    500
+   ],
+   "size": [
+    39,
+    48
+   ]
+  }
+ }
+}

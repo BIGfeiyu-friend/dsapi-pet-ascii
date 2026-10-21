@@ -1,0 +1,28 @@
+{
+  "_说明": "女仆角色的面部骨架标定。坐标为 maid_face.jpg 的像素坐标（2000x1410）；maid_faceless.webp 会先缩放到同一尺寸（两图已核对完全对齐）。",
+  "image_face": "maid_face.jpg",
+  "image_blank": "maid_faceless.webp",
+  "views": {
+    "maid": {"crop": [560, 110, 1440, 1210], "cols": 130, "display_name": "女仆（半身）"},
+    "maid_bust": {"crop": [700, 130, 1220, 760], "cols": 110, "display_name": "女仆（特写）"}
+  },
+  "face_box": [826, 342, 1096, 602],
+  "eyes": [
+    {"center": [889, 444], "a": 40, "b": 41, "inner": 1, "iris": [897, 439, 29, 31],
+     "region": [842, 396, 940, 496]},
+    {"center": [1038, 438], "a": 39, "b": 40, "inner": -1, "iris": [1027, 434, 26, 32],
+     "region": [974, 388, 1084, 488]}
+  ],
+  "brows": [
+    {"inner": [884, 371], "outer": [858, 394], "region": [850, 362, 894, 398]},
+    {"inner": [1026, 362], "outer": [1068, 388], "region": [1018, 354, 1076, 392]}
+  ],
+  "mouth": {"center": [967, 539], "width": 18, "region": [952, 528, 984, 552]},
+  "cheeks": [[884, 502], [1052, 496]],
+  "sweat_anchor": [1080, 372],
+  "colors": {
+    "ink": "#171216", "sclera": "#f8f4f4", "iris_dark": "#1b1f36", "iris": "#4a5fa2", "iris_light": "#8ba7e8",
+    "highlight": "#ffffff", "blush": "#f1879e", "blush_line": "#e0607e", "mouth": "#7e2235", "tongue": "#ec7d8f",
+    "teeth": "#fbf8f8", "tear": "#9fd8ff", "sweat": "#9fd8ff", "gloom": "#5a4a7a", "heart": "#ff5d8f", "star": "#ffe27a"
+  }
+}

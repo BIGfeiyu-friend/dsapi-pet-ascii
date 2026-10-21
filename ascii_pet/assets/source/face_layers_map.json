@@ -1,0 +1,41 @@
+{
+ "_说明": "表情差分 PSD（未命名作品.psd，2480×1748，Procreate 导出）的图层映射。index 是自底向上的图层序号（tools/psd_layers.py 列出的序号），name 用来核对；PSD 改过图层顺序时请更新这里，再运行 tools/import_face_layers.py。",
+ "layers": {
+  "open_lines": {"index": 47, "name": "从选区"},
+  "open_ref": {"index": 46, "name": "图层 3"},
+  "open_sclera": {"index": 32, "name": "图层 11"},
+  "open_iris_dark": {"index": 62, "name": "图层 53"},
+  "open_iris_blue": {"index": 61, "name": "图层 54"},
+  "open_iris_hl": {"index": 68, "name": "图层 55"},
+  "half_lines": {"index": 55, "name": "从选区"},
+  "half_sclera": {"index": 52, "name": "图层 64"},
+  "wide_lines": {"index": 60, "name": "从选区"},
+  "wide_sclera": {"index": 56, "name": "图层 66"},
+  "wide_iris_dark": {"index": 59, "name": "从选区"},
+  "wide_iris_blue": {"index": 57, "name": "图层 63"},
+  "wide_iris_hl": {"index": 70, "name": "图层 69"},
+  "closed_lines": {"index": 48, "name": "图层 56"},
+  "smile_lines": {"index": 51, "name": "图层 57"},
+  "smile_mouth_fill": {"index": 49, "name": "图层 58"},
+  "o_mouth_fill": {"index": 50, "name": "图层 67"}
+ },
+ "align": [
+  {"moving": "open_iris_dark", "reference": "open_ref", "guess": [511, -20],
+   "roles": ["open_iris_dark", "open_iris_blue", "open_iris_hl"]}
+ ],
+ "states": {
+  "open": {"lines": "open_lines", "sclera": "open_sclera", "iris": "normal", "mouth_name": "dot"},
+  "half": {"lines": "half_lines", "sclera": "half_sclera", "iris": "normal", "mouth_name": "small"},
+  "wide": {"lines": "wide_lines", "sclera": "wide_sclera", "iris": "small", "mouth_name": "o", "mouth_fill": "o_mouth_fill"},
+  "closed": {"lines": "closed_lines"},
+  "smile": {"lines": "smile_lines", "mouth_name": "open", "mouth_fill": "smile_mouth_fill"}
+ },
+ "adjust": {
+  "_说明": "导入后的微调（不改 PSD 原文件）。键 = 状态:部位，side = 擦主笔画的哪一头；从笔尖起沿笔画擦掉 trim 像素（标定图像素），再用 taper 像素收回尖尖的笔锋。smile:eye_l = 笑眼里你视角左边那只眼：外眼角尾巴在睫毛分叉之后比右眼长约 6 像素、垂得更低。想再短一点就把 trim 调大，调成 0 就是原画。",
+  "smile:eye_l": {"side": "left", "trim": 7, "taper": 7}
+ },
+ "iris": {
+  "normal": {"dark": "open_iris_dark", "blue": "open_iris_blue", "highlight": "open_iris_hl"},
+  "small": {"dark": "wide_iris_dark", "blue": "wide_iris_blue", "highlight": "wide_iris_hl"}
+ }
+}

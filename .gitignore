@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Never commit personal data from the pet's app-data folder (%APPDATA%\dsh-pet-standalone-webm-chat)
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite3
+*.log
+*.jsonl
+memory/
+sessions/
+sessions-slot-*/
+anim_cache/
+memory_config.json
+config-slot-*.json
+balance_cache.json
+runtime-*.json
+
+# Upstream binaries and installer backups must not be redistributed
+*.exe
+*.exe.orig
+*.exe.orig.prev
+*.exe.new
+*.pyc.txt
+
+# Local-only helpers
+scan_private.local.txt
+.env
