@@ -1149,9 +1149,9 @@ v0.7.1 的眼睛只能在 5 张手绘之间切换（睁眼 / 半睁 / 睁大 / �
 - **验证**（作者的桌宠）：菜单自检（真实菜单的结构和截图）、聊天窗口自检（「AI 对话」正常打开、皮肤、历史记录都在）、启动后 2 分钟日志没有新增、CPU 空闲；记忆库指纹前后一致。内存占用和以前差不多（约 650~690 MB），这次省的是磁盘。
 - 注意：原桌宠自动更新会换掉 exe 和 `_internal`，届时这两样文件会回来（菜单和设置的改动保留）。
 
-### 3.22 macOS（实验版）与上游 4.3 兼容（发布版 v1.5.0）
+### 3.22 macOS 与上游 4.3 兼容（发布版 v1.5.0）
 
-- **macOS（实验版，没有在真机上运行过）**：安装器在 `mac/install_mac.py`，扩展代码和 Windows 版是同一份。Mac 版的桌宠是带签名的 `.app`，PyInstaller 把归档“挂”在主程序的 `__LINKEDIT` 段里，所以安装器会先去掉旧签名、换掉入口、把 `__LINKEDIT` 和字符串表的长度改对（和 PyInstaller 打包时做的一样），再用系统自带的 `codesign` 重新做 ad-hoc 签名（上游本来就是 ad-hoc 签名）。扩展装在 `~/Library/Application Support/dsh-pet-ascii`，不放进 `.app`；入口（`patch_src/pet_entry_wrapper_mac.py`）先把这个文件夹加进导入路径。用上游 v4.3.4 的真实 Mac 程序试过：自检全部通过，卸载能逐字节还原。
+- **macOS（已完成 Apple 芯片实机验证）**：安装器在 `mac/install_mac.py`，扩展代码和 Windows 版是同一份。Mac 版的桌宠是带签名的 `.app`，PyInstaller 把归档“挂”在主程序的 `__LINKEDIT` 段里，所以安装器会先去掉旧签名、换掉入口、把 `__LINKEDIT` 和字符串表的长度改对（和 PyInstaller 打包时做的一样），再用系统自带的 `codesign` 重新做 ad-hoc 签名（上游本来就是 ad-hoc 签名）。扩展装在 `~/Library/Application Support/dsh-pet-ascii`，不放进 `.app`；入口（`patch_src/pet_entry_wrapper_mac.py`）先把这个文件夹加进导入路径。此前对上游 v4.3.4 程序的安装 / 卸载检查能逐字节还原；2026-10-22 又在 macOS 26.4 / arm64 真机上验证了安装、ad-hoc 签名、字符画主窗口、测试台、聊天窗口、灵动岛与房间窗口，Mock 联动通过，测试台约 20 FPS。Mac 单元测试结果为 358 通过、2 项 Windows 专用测试跳过。验证范围见 [Mac 实机验证记录](../mac/README.md#实机验证记录)。
 - **跟着系统走的地方**：数据目录跟着桌宠自己的算法（Mac 是 `~/Library/Application Support/<桌宠>/`，以前非 Windows 一律 `~/.config`，在 Mac 上找不到桌宠的设置和记忆）；Spotify 用 `open spotify:` 打开；字体在 Mac 上退到 Menlo、苹方；`pet_memory` 的 bootstrap 也在 `pet_memory` 旁边找 `ascii_pet`。房间里图片的文字识别只有 Windows 有。Windows 上的行为一点没变。
 - **上游 4.3 兼容**：4.3 起她的聊天气泡按 Markdown 渲染（`body.text()` 是一整段 HTML），宽度计算和“• • •”、块状光标的比较改用纯文本（`chat_theme.plain_text`）；4.3 换会话时会对已删除的头像再套一次样式，钩子遇到已删除的控件直接跳过。全部单元测试在 4.2.1 和 4.3.4 的程序模块上各跑一遍，都通过。
 

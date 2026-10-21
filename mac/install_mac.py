@@ -1,5 +1,5 @@
-"""dsh-pet-ascii 的 macOS 安装器（实验版：作者没有 Mac，只在 Windows 上用合成程序和上游 v4.3.4 的 Mac 版程序测过结构，
-没有在 Mac 真机上运行过）。给你自己装好的 dsh-pet-standalone-webm-chat.app 装上 / 卸下扩展。
+"""dsh-pet-ascii 的 macOS 安装器。已在 macOS 26.4 / arm64、上游 v4.3.4 上验证安装与重新签名；
+完整验证范围见 mac/README.md。给你自己装好的 dsh-pet-standalone-webm-chat.app 装上 / 卸下扩展。
 
 做的事：
   1. 把 .app 里的主程序和它的签名封条（_CodeSignature/CodeResources）备份到
@@ -406,7 +406,7 @@ def uninstall(app: Path, addon_dir: Path = ADDON_DIR) -> list:
 
 # ---------------------------------------------------------------- 命令行
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description="dsh-pet-ascii 扩展的 macOS 安装器（实验版）")
+    ap = argparse.ArgumentParser(description="dsh-pet-ascii 扩展的 macOS 安装器")
     ap.add_argument("--app", help=f"{APP_BUNDLE} 的路径（默认在“应用程序”等常见位置找）")
     ap.add_argument("--uninstall", action="store_true")
     ap.add_argument("--status", action="store_true")
@@ -432,7 +432,8 @@ def main(argv=None) -> int:
                 print("  " + line)
             print(f"\n卸载完成。你的记忆、设置、房间仍在 {DATA_DIR}，不需要的话可以自己删除。")
             return 0
-        print("\n这是实验版：作者没有 Mac，没在真机上运行过。出问题时运行 --uninstall 即可还原。")
+        print("\n已在 macOS 26.4 / arm64、上游 v4.3.4 上验证安装与签名；验证范围见 mac/README.md。"
+              "出问题时运行 --uninstall 可恢复备份。")
         if args.dry_run:
             print("检查通过：" + install(app, dry_run=True) + "（--dry-run：没有写入任何文件）")
             return 0
