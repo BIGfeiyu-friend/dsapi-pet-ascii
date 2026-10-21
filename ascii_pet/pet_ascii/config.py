@@ -18,14 +18,25 @@ APP_DIR_NAME = "dsh-pet-standalone-webm-chat"
 KEYRING_SERVICE = "dsh-pet-standalone"
 
 
+def app_base_dir() -> Path:
+    """桌宠本体的数据目录。Windows：%APPDATA%\\<桌宠>（和以前完全一样）；其它系统跟着桌宠自己的算法走
+    （macOS 是 ~/Library/Application Support/<桌宠>），拿不到时按系统推断。"""
+    if sys.platform == "win32":
+        return Path(os.environ.get("APPDATA") or Path.home()) / APP_DIR_NAME
+    try:
+        from pet import config as pc  # type: ignore
+
+        return Path(pc._default_base()) / (getattr(pc, "APP_DIR_NAME", None) or APP_DIR_NAME)
+    except Exception:
+        pass
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Application Support" / APP_DIR_NAME
+    return Path.home() / ".config" / APP_DIR_NAME
+
+
 def data_dir() -> Path:
     base = os.environ.get("PET_ASCII_HOME")
-    if base:
-        d = Path(base)
-    elif sys.platform == "win32":
-        d = Path(os.environ.get("APPDATA") or Path.home()) / APP_DIR_NAME / "ascii_pet"
-    else:
-        d = Path.home() / ".config" / APP_DIR_NAME / "ascii_pet"
+    d = Path(base) if base else app_base_dir() / "ascii_pet"
     d.mkdir(parents=True, exist_ok=True)
     return d
 
@@ -231,10 +242,7 @@ class AsciiConfig:
 
 def pet_app_config() -> dict:
     """读取桌宠本体的 config.json（只读），用于沿用它的 DeepSeek 地址与 Key 引用。"""
-    if sys.platform == "win32":
-        p = Path(os.environ.get("APPDATA") or Path.home()) / APP_DIR_NAME / "config.json"
-    else:
-        p = Path.home() / ".config" / APP_DIR_NAME / "config.json"
+    p = app_base_dir() / "config.json"
     try:
         return json.loads(p.read_text(encoding="utf-8"))
     except Exception:

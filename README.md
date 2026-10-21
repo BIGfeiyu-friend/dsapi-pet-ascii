@@ -11,6 +11,13 @@
 
 **装好以后怎么用**（窗口、菜单、聊天、房间、常见问题）：见 [使用说明.md](使用说明.md)。
 
+| 平台 | 状态 | 安装说明 |
+|---|---|---|
+| **Windows 10 / 11** | 正式版，作者每天在用 | 本页下面的“安装” |
+| **macOS（Apple 芯片）** | **实验版**：没有在 Mac 真机上运行过 | [mac/README.md](mac/README.md) |
+
+两个平台用的是同一份扩展代码；Mac 专用的只有 `mac/` 文件夹里的安装器和启动脚本。
+
 ![字符画形象](ascii_pet/docs/real_pet_inline_smile.png)
 
 ---
@@ -54,7 +61,7 @@
 
 LINE 风格的对话窗口（截图里是虚构的对话）。
 
-更详细的设计、配置项和每个版本的改动，见开发说明 [ascii_pet/README.md](ascii_pet/README.md) 和 [pet_memory/README.md](pet_memory/README.md)。当前版本：pet_ascii v1.4.2，pet_memory 1.0.0。
+更详细的设计、配置项和每个版本的改动，见开发说明 [ascii_pet/README.md](ascii_pet/README.md) 和 [pet_memory/README.md](pet_memory/README.md)。当前版本：pet_ascii v1.5.0，pet_memory 1.0.0。
 
 ---
 
@@ -62,7 +69,7 @@ LINE 风格的对话窗口（截图里是虚构的对话）。
 
 | 项目 | 说明 |
 |---|---|
-| 系统 | Windows 10 / 11（作者只在 Windows 11 上测试过） |
+| 系统 | Windows 10 / 11（作者只在 Windows 11 上测试过）。**Mac 请看 [mac/README.md](mac/README.md)** |
 | 上游桌宠 | [MerZlin/dsh-pet-indesktop](https://github.com/MerZlin/dsh-pet-indesktop/releases) 的 **WebM Chat 版**，安装包 `dsh-pet-standalone-webm-chat-setup.exe`，默认装在 `%LOCALAPPDATA%\Programs\dsh-pet-standalone-webm-chat`。**本扩展在上游 4.2.1 版上开发和测试**；不带 AI 对话的 “WebM” 版不能用 |
 | DeepSeek API Key | 在桌宠**自己的**聊天设置里填好 DeepSeek 的 Key（扩展会沿用它，不需要另外填） |
 | Python 3.8 以上 | **只有安装器需要**（任意版本，只用标准库），桌宠运行时不需要。可以从 [python.org](https://www.python.org/downloads/windows/) 安装 |
@@ -72,7 +79,7 @@ LINE 风格的对话窗口（截图里是虚构的对话）。
 
 ---
 
-## 安装
+## 安装（Windows）
 
 1. 安装上游桌宠（WebM Chat 版），启动一次，在它的设置里填好 DeepSeek API Key，确认能正常聊天。
 2. 在托盘图标上右键 →「退出」，把桌宠完全关掉（多开的话每一只都要关）。
@@ -152,7 +159,8 @@ Add-WindowsCapability -Online -Name "Language.OCR~~~zh-CN~0.0.1.0"
 ## 兼容性与已知限制
 
 - **依赖上游的内部结构**：扩展在运行时给桌宠的聊天管线、菜单、窗口打补丁（不改任何上游文件）。每个挂载点出错时都会退回原样：记忆和提速失效时桌宠照常聊天；菜单、对话框皮肤、灵动岛等接不上时，保持上游原来的样子，并在桌宠日志里留下记录。上游大版本更新后，可能有部分功能暂时失效，但不会让桌宠打不开。
-- 只在上游 4.2.1、Windows 11、100% 缩放、单显示器上测试过；多显示器和高 DPI 没有测试。
+- 实际安装只在上游 4.2.1、Windows 11、100% 缩放、单显示器上测试过；多显示器和高 DPI 没有测试。全部单元测试也在上游 4.3.4 的程序模块上跑过（v1.5.0 修好了 4.3 起聊天气泡按 Markdown 显示带来的两处问题），但 Windows 上的 4.3.x 还没有实际装过。
+- macOS 版是实验版，详见 [mac/README.md](mac/README.md) 开头的说明。
 - 字符画形象只有一个基础姿势（它来自一幅静态插画），动作以整体位移、跳动和特效为主。
 - 右键菜单默认去掉了字符画用不到的原桌宠功能（播放动画、切换角色、音乐、快捷启动、Agent 联动、主动识屏、待办提醒等，见 [ascii_pet/README.md](ascii_pet/README.md) 3.21 节）。想要回来，把 `ascii_pet\config.json` 里的 `trim_unused_menu` 改成 `false`，再重启桌宠。
 - 副人格默认是影子模式，虚拟房间还没有长时间无人值守地跑过。其余已知问题见 [ascii_pet/README.md](ascii_pet/README.md) 第 8 节。
@@ -179,7 +187,7 @@ except Exception:
 
 ## 开发
 
-- 单元测试（352 项）：需要 Python 3.11、PySide6、Pillow、pytest，以及桌宠的 `pet` 模块（可以把桌宠自带的 Python 包解出来加进 `sys.path`）。运行 `python ascii_pet/tests/run_tests.py`。测试只写临时目录，不会读你的真实记忆。
+- 单元测试（360 项）：需要 Python 3.11、PySide6、Pillow、pytest，以及桌宠的 `pet` 模块（可以把桌宠自带的 Python 包解出来加进 `sys.path`）。运行 `python ascii_pet/tests/run_tests.py`。测试只写临时目录，不会读你的真实记忆。
 - 上传或分享本文件夹之前，先运行 `python scan_private.py`，检查有没有 API Key、个人路径、邮箱、数据库或日志文件混进来。
 
 ## 许可与致谢

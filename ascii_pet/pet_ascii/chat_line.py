@@ -20,7 +20,7 @@ from datetime import datetime
 
 log = logging.getLogger("pet.ascii")
 
-BODY = '"Microsoft YaHei UI", "Segoe UI", sans-serif'
+BODY = '"Microsoft YaHei UI", "PingFang SC", "Hiragino Sans GB", "Segoe UI", sans-serif'
 
 L = {
     "sky_top": "#8babd7", "sky_bot": "#9db8e0",

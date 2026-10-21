@@ -17,8 +17,8 @@ import weakref
 
 log = logging.getLogger("pet.ascii")
 
-MONO = '"Cascadia Mono", "Consolas", "Microsoft YaHei UI", monospace'
-BODY = '"Microsoft YaHei UI", "Segoe UI", sans-serif'
+MONO = '"Cascadia Mono", "Consolas", "Menlo", "Microsoft YaHei UI", "PingFang SC", monospace'
+BODY = '"Microsoft YaHei UI", "PingFang SC", "Hiragino Sans GB", "Segoe UI", sans-serif'
 
 C = {
     "bg": "#0b0e14", "panel": "#0f141c", "line": "#2a3344", "line2": "#3b475c",
@@ -306,12 +306,26 @@ def _fit_bubble(bubble, max_width: int) -> None:
         return
     body.ensurePolished()
     fm = body.fontMetrics()
-    natural = max((fm.horizontalAdvance(line) for line in (body.text() or "").split("\n")), default=0)
+    natural = max((fm.horizontalAdvance(line) for line in plain_text(body).split("\n")), default=0)
     inner = max(120, max_width - chrome)
     if bubble.property("lineTheme"):                              # LINE：短消息也按一行的宽度，不会无故折行
         body.setMinimumWidth(min(natural + 2, inner) if natural else 0)
         return
     body.setMinimumWidth(min(natural, inner) if natural > inner * 0.6 else 0)
+
+
+def plain_text(body) -> str:
+    """气泡正文的纯文本。上游 4.3 起她的气泡按 Markdown 渲染成富文本，body.text() 是一整段 HTML。"""
+    from PySide6.QtCore import Qt
+    from PySide6.QtGui import QTextDocument
+
+    t = body.text() or ""
+    fmt = body.textFormat()
+    if fmt == Qt.RichText or (fmt == Qt.AutoText and t.lstrip()[:1] == "<" and "</" in t):
+        doc = QTextDocument()
+        doc.setHtml(t)
+        return doc.toPlainText()
+    return t
 
 
 def _apply_bubble(bubble, on: bool) -> None:
@@ -523,19 +537,23 @@ def install(enabled: bool = True, name_provider=None, tile_path: str = "", title
         return result
 
     def apply_avatar_style(self, label, color, *a, **k):
-        sk = skin_of(self)
-        if sk == "ascii" and label is getattr(self, "avatar_label", None):
-            label.setStyleSheet(AVATAR_QSS)
+        try:
+            sk = skin_of(self)
+            if sk == "ascii" and label is getattr(self, "avatar_label", None):
+                label.setStyleSheet(AVATAR_QSS)
+                return None
+            if sk == "line" and label is not getattr(self, "avatar_label", None) and label.objectName() == "bubble-avatar":
+                label.setStyleSheet(chat_line.AVATAR_QSS)             # 圆形头像图片自己带形状
+                return None
+            return orig_avatar(self, label, color, *a, **k)
+        except RuntimeError:                  # 上游 4.3 换会话时会给已经删除的头像再套一次样式：跳过
             return None
-        if sk == "line" and label is not getattr(self, "avatar_label", None) and label.objectName() == "bubble-avatar":
-            label.setStyleSheet(chat_line.AVATAR_QSS)                 # 圆形头像图片自己带形状
-            return None
-        return orig_avatar(self, label, color, *a, **k)
 
     def bubble_init(self, *a, **k):
         orig_init(self, *a, **k)
         content = a[1] if len(a) > 1 else k.get("content", "")
         self._ascii_raw = content if isinstance(content, str) else str(content or "")
+        self._ascii_shown = self._ascii_raw
         if _state["enabled"]:
             win = self.window()
             if win is None or active(win) or win is self:
@@ -554,8 +572,9 @@ def install(enabled: bool = True, name_provider=None, tile_path: str = "", title
         if raw is None:
             return
         shown = shown_text(self, raw)
-        if self.body.text() != shown:
+        if getattr(self, "_ascii_shown", None) != shown:            # 不拿 body.text() 比：4.3 起那是 HTML
             orig_set_content(self, shown)
+            self._ascii_shown = shown
             if self.property("lineTheme") or self.property("asciiTheme"):
                 _fit_bubble(self, self.maximumWidth())
 
@@ -563,6 +582,7 @@ def install(enabled: bool = True, name_provider=None, tile_path: str = "", title
         self._ascii_raw = text if isinstance(text, str) else str(text)
         shown = shown_text(self, self._ascii_raw)
         result = orig_set_content(self, shown if shown != self._ascii_raw else text, *a, **k)
+        self._ascii_shown = shown
         if self.property("asciiTheme") or self.property("lineTheme"):
             _fit_bubble(self, self.maximumWidth())
         return result

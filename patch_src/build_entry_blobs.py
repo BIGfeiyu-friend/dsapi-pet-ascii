@@ -7,6 +7,7 @@
 
 - pet_entry_patched.py：针对 4.2.1 原版入口的改版（与原版相比只多了 pet_memory 那几行）
 - pet_entry_wrapper.py：通用包装版，用于未知版本的原版入口；占位符会在安装时被换成原版入口的字节码
+- pet_entry_wrapper_mac.py：macOS 版的通用包装（先把 ~/Library/Application Support/dsh-pet-ascii 加进导入路径），内嵌在 mac/install_mac.py
 """
 from __future__ import annotations
 
@@ -33,11 +34,13 @@ def main() -> int:
     blobs = {
         "PATCHED_ENTRY_B64": build("pet_entry_patched.py"),
         "WRAPPER_ENTRY_B64": build("pet_entry_wrapper.py"),
+        "MAC_WRAPPER_ENTRY_B64": build("pet_entry_wrapper_mac.py"),
     }
+    where = {"MAC_WRAPPER_ENTRY_B64": HERE.parent / "mac" / "install_mac.py"}
     if "--check" in sys.argv:
-        text = (HERE.parent / "install.py").read_text(encoding="utf-8")
         ok = True
         for key, blob in blobs.items():
+            text = where.get(key, HERE.parent / "install.py").read_text(encoding="utf-8")
             m = re.search(key + r' = \(\n((?:\s+"[A-Za-z0-9+/=]+"\n)+)\)', text)
             embedded = base64.b64decode("".join(re.findall(r'"([A-Za-z0-9+/=]+)"', m.group(1)))) if m else b""
             same = embedded == blob

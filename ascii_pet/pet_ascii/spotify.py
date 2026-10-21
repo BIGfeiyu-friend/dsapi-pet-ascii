@@ -321,6 +321,16 @@ class SpotifyClient:
 
 def launch_desktop_app() -> bool:
     """没有正在使用的设备时，打开电脑上的 Spotify 客户端（装了的话）。"""
+    import sys
+
+    if sys.platform == "darwin":                     # macOS：用系统的 open 打开 spotify: 链接
+        import subprocess
+
+        try:
+            subprocess.Popen(["open", "spotify:"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return True
+        except OSError:
+            return False
     try:
         os.startfile("spotify:")                     # type: ignore[attr-defined]
         return True

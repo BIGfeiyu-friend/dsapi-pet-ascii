@@ -17,7 +17,7 @@ from PySide6.QtWidgets import QWidget
 from .grid import CLEAR, WIDE_CONT, char_width
 
 FONT_FILES = ("C:/Windows/Fonts/OCRAEXT.TTF",)
-FONT_FALLBACKS = ("OCR A Extended", "OCR A", "Consolas", "Cascadia Mono", "Courier New")
+FONT_FALLBACKS = ("OCR A Extended", "OCR A", "Consolas", "Cascadia Mono", "Menlo", "Monaco", "Courier New")
 WIDE_FONT_FILES = ("C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/simhei.ttf", "C:/Windows/Fonts/simsun.ttc")
 SYMBOL_FONT_FILES = ("C:/Windows/Fonts/seguisym.ttf", "C:/Windows/Fonts/consola.ttf")
 _loaded_family: str | None = None
@@ -37,11 +37,21 @@ def _family_from_files(files, fallback: str) -> str:
 _symbol_family: str | None = None
 
 
+def _installed(names, default: str) -> str:
+    """names 里第一个装了的字体（macOS 上没有微软雅黑、Segoe UI Symbol，退到苹方、Apple Symbols）。"""
+    try:
+        have = set(QFontDatabase.families())
+    except Exception:
+        return default
+    return next((n for n in names if n in have), default)
+
+
 def symbol_font_family() -> str:
     """非 ASCII 单宽符号（★♥✦░▒ 等）用 Segoe UI Symbol 绘制，避免 OCR-A 缺字显示成方框。"""
     global _symbol_family
     if _symbol_family is None:
-        _symbol_family = _family_from_files(SYMBOL_FONT_FILES, "Segoe UI Symbol")
+        _symbol_family = _family_from_files(SYMBOL_FONT_FILES, _installed(("Segoe UI Symbol", "Apple Symbols", "Menlo"),
+                                                                               "Segoe UI Symbol"))
     return _symbol_family
 
 
@@ -57,7 +67,8 @@ def wide_font_family() -> str:
                 if fams:
                     fam = fams[0]
                     break
-        _wide_family = fam or "Microsoft YaHei UI"
+        _wide_family = fam or _installed(("Microsoft YaHei UI", "PingFang SC", "Hiragino Sans GB", "Heiti SC",
+                                          "Noto Sans CJK SC"), "Microsoft YaHei UI")
     return _wide_family
 
 

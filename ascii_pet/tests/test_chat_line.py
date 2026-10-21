@@ -5,6 +5,7 @@ import pytest
 from test_chat_theme import chat_window  # noqa: F401  （同一个夹具：临时 APPDATA 里的经典聊天窗口）
 
 from pet_ascii import chat_line, chat_theme
+from pet_ascii.chat_theme import plain_text
 
 
 def test_line_readable_contrast():
@@ -91,12 +92,12 @@ def test_line_times_read_mark_and_groups(chat_window):
     b = win._add("assistant", "")
     b.set_state("streaming")
     _settle(app)
-    assert b.body.text() == chat_line.TYPING and not b.status_label.isVisible()        # 她在想：只显示 • • •
+    assert plain_text(b.body) == chat_line.TYPING and not b.status_label.isVisible()        # 她在想：只显示 • • •
     assert chat_line.time_text(bs[3]) == f"{chat_line.READ_MARK}\n{hm(2)}"
     assert chat_line.time_text(bs[4]).startswith(chat_line.READ_MARK)
     b.set_content("欢迎回来")
     b.set_state("normal")
-    assert b.body.text() == "欢迎回来"
+    assert plain_text(b.body) == "欢迎回来"
     win._remove_bubble(b)                                                               # 删掉她的回复：既読跟着消失
     _settle(app)
     assert not chat_line.time_text(bs[3]).startswith(chat_line.READ_MARK)
@@ -132,7 +133,7 @@ def test_line_bubble_widths(chat_window):
     assert long.width() <= vw and not win.scroll.horizontalScrollBar().isVisible()
     assert long.body.minimumWidth() > 150                                                  # 长消息撑满可用宽度
     fm = short.body.fontMetrics()
-    assert short.body.minimumWidth() >= fm.horizontalAdvance(short.body.text())            # 短消息不会无故折行
+    assert short.body.minimumWidth() >= fm.horizontalAdvance(plain_text(short.body))            # 短消息不会无故折行
 
 
 def test_line_avatar_is_her_drawn_happy_face(tmp_path):

@@ -38,8 +38,9 @@ def memory_db_path() -> Path:
     env = os.environ.get("PET_ASCII_MEMORY_DB")
     if env:
         return Path(env)
-    base = Path(os.environ.get("APPDATA") or Path.home()) if sys.platform == "win32" else Path.home() / ".config"
-    return base / APP_DIR_NAME / "memory" / "memory.db"
+    from .config import app_base_dir
+
+    return app_base_dir() / "memory" / "memory.db"
 
 
 def pasted(text: str) -> bool:

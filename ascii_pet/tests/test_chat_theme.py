@@ -90,7 +90,7 @@ def test_streaming_cursor(chat_window):
     b = win._bubbles[-1]
     b.set_state("streaming")
     b.set_content("从前有一只小鲸鱼")
-    assert b.body.text().endswith("▌")
+    assert chat_theme.plain_text(b.body).endswith("▌")
     b.set_content("从前有一只小鲸鱼，晚安。")
     b.set_state("normal")
-    assert b.body.text() == "从前有一只小鲸鱼，晚安。"                       # 生成完：光标去掉，正文原样
+    assert chat_theme.plain_text(b.body) == "从前有一只小鲸鱼，晚安。"                       # 生成完：光标去掉，正文原样

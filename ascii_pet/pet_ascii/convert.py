@@ -38,7 +38,7 @@ def find_ffmpeg() -> str | None:
         pass
     here = os.path.dirname(os.path.abspath(__file__))
     for base in (os.path.join(here, "..", "..", "_internal"), getattr(sys, "_MEIPASS", "")):
-        hits = glob.glob(os.path.join(base, "imageio_ffmpeg", "binaries", "ffmpeg*.exe"))
+        hits = glob.glob(os.path.join(base, "imageio_ffmpeg", "binaries", "ffmpeg*"))
         if hits:
             return hits[0]
     return shutil.which("ffmpeg")

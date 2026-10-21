@@ -1149,6 +1149,12 @@ v0.7.1 的眼睛只能在 5 张手绘之间切换（睁眼 / 半睁 / 睁大 / �
 - **验证**（作者的桌宠）：菜单自检（真实菜单的结构和截图）、聊天窗口自检（「AI 对话」正常打开、皮肤、历史记录都在）、启动后 2 分钟日志没有新增、CPU 空闲；记忆库指纹前后一致。内存占用和以前差不多（约 650~690 MB），这次省的是磁盘。
 - 注意：原桌宠自动更新会换掉 exe 和 `_internal`，届时这两样文件会回来（菜单和设置的改动保留）。
 
+### 3.22 macOS（实验版）与上游 4.3 兼容（发布版 v1.5.0）
+
+- **macOS（实验版，没有在真机上运行过）**：安装器在 `mac/install_mac.py`，扩展代码和 Windows 版是同一份。Mac 版的桌宠是带签名的 `.app`，PyInstaller 把归档“挂”在主程序的 `__LINKEDIT` 段里，所以安装器会先去掉旧签名、换掉入口、把 `__LINKEDIT` 和字符串表的长度改对（和 PyInstaller 打包时做的一样），再用系统自带的 `codesign` 重新做 ad-hoc 签名（上游本来就是 ad-hoc 签名）。扩展装在 `~/Library/Application Support/dsh-pet-ascii`，不放进 `.app`；入口（`patch_src/pet_entry_wrapper_mac.py`）先把这个文件夹加进导入路径。用上游 v4.3.4 的真实 Mac 程序试过：自检全部通过，卸载能逐字节还原。
+- **跟着系统走的地方**：数据目录跟着桌宠自己的算法（Mac 是 `~/Library/Application Support/<桌宠>/`，以前非 Windows 一律 `~/.config`，在 Mac 上找不到桌宠的设置和记忆）；Spotify 用 `open spotify:` 打开；字体在 Mac 上退到 Menlo、苹方；`pet_memory` 的 bootstrap 也在 `pet_memory` 旁边找 `ascii_pet`。房间里图片的文字识别只有 Windows 有。Windows 上的行为一点没变。
+- **上游 4.3 兼容**：4.3 起她的聊天气泡按 Markdown 渲染（`body.text()` 是一整段 HTML），宽度计算和“• • •”、块状光标的比较改用纯文本（`chat_theme.plain_text`）；4.3 换会话时会对已删除的头像再套一次样式，钩子遇到已删除的控件直接跳过。全部单元测试在 4.2.1 和 4.3.4 的程序模块上各跑一遍，都通过。
+
 ## 4. 开发测试台
 
 随桌宠运行时，测试台（标题栏的 ☰）和字符画窗口共用同一个运行时。
@@ -1249,7 +1255,7 @@ python tools/preview_character.py assets/characters/新角色.json 预览输出�
 | 接入冒烟测试（需要桌宠的 `pet` 模块） | `python tools/integration_smoke.py` |
 | 真实 API 测试（会产生少量费用） | `python tools/live_api_test.py <输出目录> 意图1 意图2 ...` |
 
-单元测试共 352 项（v0.8 新增 `test_morph_face.py` 19 项、菜单往左展开 1 项；v0.8.1 新增挂机起步时长可配置 1 项；v0.9 新增 `test_persona.py` 24 项；v1.0 新增 `test_room.py` 24 项、`test_room_life.py` 18 项、`test_room_viewer.py` 5 项；v1.1 新增 `test_room_bridge.py` 10 项；v1.1.1 新增 `test_close_tip.py` 4 项；v1.1.2 新增 `test_single_instance.py` 6 项；v1.1.3 新增 `test_no_spawn.py` 9 项；v1.1.4 新增“她自己决定什么时候再来” 4 项；v1.2 新增 `test_room_look.py` 7 项；v1.2.2 新增副模型看图 3 项；v1.2.3 新增“记得自己读过什么” 3 项；v1.3 新增 `test_spotify.py` 11 项、v1.3.1 又加 3 项、v1.3.2 又加 4 项、v1.3.3 又加 1 项、v1.3.4 又加 2 项；v1.3.5 新增睡着醒来时的选择范围 2 项；v1.3.6 新增 `test_trim.py` 3 项；v1.3.7 又加 1 项、新增 `test_size_menu.py` 3 项；v1.3.8 房间近况只附新事 3 项；v1.3.9 新增 `test_window_strip.py` 3 项；v1.4.0 新增 `test_chat_line.py` 9 项；v1.4.1 便条全文、摘要加“…” 2 项，思考过程默认收起改写了 1 项；v1.4.2 Spotify 多等再判断、重试不退回单曲 2 项）。
+单元测试共 360 项（v0.8 新增 `test_morph_face.py` 19 项、菜单往左展开 1 项；v0.8.1 新增挂机起步时长可配置 1 项；v0.9 新增 `test_persona.py` 24 项；v1.0 新增 `test_room.py` 24 项、`test_room_life.py` 18 项、`test_room_viewer.py` 5 项；v1.1 新增 `test_room_bridge.py` 10 项；v1.1.1 新增 `test_close_tip.py` 4 项；v1.1.2 新增 `test_single_instance.py` 6 项；v1.1.3 新增 `test_no_spawn.py` 9 项；v1.1.4 新增“她自己决定什么时候再来” 4 项；v1.2 新增 `test_room_look.py` 7 项；v1.2.2 新增副模型看图 3 项；v1.2.3 新增“记得自己读过什么” 3 项；v1.3 新增 `test_spotify.py` 11 项、v1.3.1 又加 3 项、v1.3.2 又加 4 项、v1.3.3 又加 1 项、v1.3.4 又加 2 项；v1.3.5 新增睡着醒来时的选择范围 2 项；v1.3.6 新增 `test_trim.py` 3 项；v1.3.7 又加 1 项、新增 `test_size_menu.py` 3 项；v1.3.8 房间近况只附新事 3 项；v1.3.9 新增 `test_window_strip.py` 3 项；v1.4.0 新增 `test_chat_line.py` 9 项；v1.4.1 便条全文、摘要加“…” 2 项，思考过程默认收起改写了 1 项；v1.4.2 Spotify 多等再判断、重试不退回单曲 2 项；v1.5.0（发布版）新增 `test_platform_mac.py` 8 项）。
 
 `test_room*.py`（v1.0 虚拟房间）：越界 / 非法路径全部拒绝、只能写文字文件、覆盖和修改先进回收站、礼物文件夹本身受保护、日志编号跨重启连续、长行日志的尾部读取、礼物收件；进房间的条件（时间、你刚互动、睡着时的精力、每日上限）、夜里间隔更长、读完礼物接着写、你发消息后做完这一步就出来、违规动作告诉她原因、无法解析时补问一次、Mock 不进房间、自己醒来不重置你的无聊计时；无聊（单纯重复涨得多、对相似的事趋同涨得少、新鲜事下降）、联想和“你注意到”、外部变化与直接放进文件夹的礼物、她自己的改动不算变化；思考量的 z 分数、三种去留、合并只加强不改写、印象到期 / 升级、长期上限、睡着时用副模型整理；“房间”窗口的显示、详情里的思考过程、窗口除了送礼物什么都不写、桌宠离线提示、图标。
 

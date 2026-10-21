@@ -70,15 +70,24 @@ def install() -> None:
         log.exception("pet_ascii 接入失败，桌宠将按原样运行")
 
 
-def _ascii_path() -> bool:
-    """字符画模块位于安装目录下的 ascii_pet 文件夹（与 exe 同级），把它加入导入路径。"""
+def _ascii_candidates() -> list:
+    """字符画模块（ascii_pet 文件夹）可能在的地方：Windows 装在 exe 旁边；
+    macOS 和 pet_memory 一起装在 ~/Library/Application Support/dsh-pet-ascii（即 pet_memory 的上一级）。"""
     import os
 
-    root = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "ascii_pet")
-    if os.path.isdir(os.path.join(root, "pet_ascii")):
-        if root not in sys.path:
-            sys.path.append(root)
-        return True
+    return [os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "ascii_pet"),
+            os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ascii_pet")]
+
+
+def _ascii_path() -> bool:
+    """找到字符画模块并把它加入导入路径。"""
+    import os
+
+    for root in _ascii_candidates():
+        if os.path.isdir(os.path.join(root, "pet_ascii")):
+            if root not in sys.path:
+                sys.path.append(root)
+            return True
     return False
 
 
