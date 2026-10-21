@@ -1,6 +1,6 @@
-"""macOS（实验版）支持：数据目录、打开 Spotify、bootstrap 找字符画模块，以及 Mac 安装器对 Mach-O 的改写。
-测试机是 Windows：Mac 的分支靠把 sys.platform 临时换成 "darwin" 来测；安装器用一个合成的小 Mach-O 程序测；
-真机上的 codesign 签名测不了（安装器里那一步用桩代替）。"""
+"""macOS 支持：数据目录、打开 Spotify、bootstrap 找字符画模块，以及 Mac 安装器对 Mach-O 的改写。
+跨平台测试通过 monkeypatch 覆盖 Mac 分支，安装器用合成的 Mach-O 程序和签名桩隔离系统调用；
+真实 Mac 的安装、codesign 与窗口验证记录见 mac/README.md。"""
 import base64
 import importlib.util
 import marshal
@@ -63,7 +63,8 @@ def test_bootstrap_finds_ascii_pet_next_to_pet_memory():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     cands = [Path(c) for c in mod._ascii_candidates()]
-    assert cands[0] == Path(sys.executable).resolve().parent / "ascii_pet"          # Windows：exe 旁边
+    # 查找启动程序旁边的目录；虚拟环境的 Python 可以是符号链接，不能解引用到环境外。
+    assert cands[0] == Path(sys.executable).absolute().parent / "ascii_pet"
     assert cands[1] == ROOT / "ascii_pet"                                            # Mac：和 pet_memory 放在一起
 
 

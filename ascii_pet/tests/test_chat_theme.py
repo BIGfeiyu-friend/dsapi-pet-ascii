@@ -25,6 +25,9 @@ def chat_window(tmp_path, monkeypatch):
     from PySide6.QtWidgets import QApplication
 
     monkeypatch.setenv("APPDATA", str(tmp_path))
+    # macOS 不读取 APPDATA；源码环境也没有打包变体名。所有平台都显式隔离测试数据。
+    monkeypatch.setattr(pc, "_default_base", lambda: tmp_path)
+    monkeypatch.setattr(pc, "APP_DIR_NAME", "dsh-pet-standalone-webm-chat")
     appdir = tmp_path / "dsh-pet-standalone-webm-chat"
     appdir.mkdir()
     (appdir / "config.json").write_text(json.dumps({

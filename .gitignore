@@ -31,3 +31,7 @@ runtime-*.json
 # Local-only helpers
 scan_private.local.txt
 .env
+
+# Local macOS deployment and test environment
+.local/
+.venv/
